@@ -14,17 +14,28 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as ImagePicker from "expo-image-picker";
+import { API_URL } from "@env";
+import { useNavigationVisibility } from '../../components/NavigationContext';
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-export const ProfileUser = () => {
+export const ProfileUser = ({ navigation }) => {
   const { userInfo, logout } = useContext(AuthContext);
   const [isLoading, setisLoading] = useState(true);
   const [dataUser, setDataUser] = useState({});
   const token = userInfo.access;
-
-  const [adoptanteData, setadoptanteData] = useState({});
+  console.log("USER INFO TOKEN", {userInfo });
+  const [adoptanteData, setadoptanteData] = useState({
+    first_name: 'Juan',
+    lastname: 'Pita',
+    email: 'jxpita@gmail.com',
+    phone: '0984511551',
+    address: 'Urbanizacion las Riberas',
+    age: 28,
+    imageUrl: require('../../../img/profile.jpg')
+  });
+  let editable;
 
   // Imputs
   const [phone, setPhone] = useState("");
@@ -34,6 +45,11 @@ export const ProfileUser = () => {
   // Imagenes
   const [image, setImage] = useState("");
   const [imageUpdate, setimageUpdate] = useState("");
+
+  const { setIsTabBarVisible } = useNavigationVisibility();
+
+  const handleInputFocus = () => setIsTabBarVisible(false);
+  const handleInputBlur = () => setIsTabBarVisible(true)
 
   const selectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,7 +66,7 @@ export const ProfileUser = () => {
   };
 
   const getUser = (token) => {
-    const url = "http://192.168.200.4:8000/user/data";
+    const url = `${API_URL}/user/data`;
     axios
       .get(url, {
         headers: {
@@ -72,7 +88,7 @@ export const ProfileUser = () => {
   const { user } = adoptanteData;
 
   const update = async (phone, direction, age, image) => {
-    const url = `http://192.168.200.4:8000/user/updateadoptante/${userInfo.idAdoptante}`;
+    const url = `${API_URL}/user/updateadoptante/${userInfo.idAdoptante}`;
 
     /*
     let bodyFormData = new FormData();
@@ -139,10 +155,12 @@ export const ProfileUser = () => {
   };
 
   const getAdoptante = async () => {
+    /* console.log("CONSULTA ADOPTANTE"); */
     const resp = await axios.get(
-      `http://192.168.200.4:8000/user/adoptantedetail/${userInfo.idAdoptante}`
+      `${API_URL}/modulos/usuario/${userInfo.id}`
     );
     setadoptanteData(resp.data);
+    /* console.log("data", resp.data); */
   };
 
   useEffect(() => {
@@ -165,31 +183,27 @@ export const ProfileUser = () => {
           style={{
             position: "relative",
             alignSelf: "flex-end",
-            marginTop: "10%",
+            paddingTop: "10%",
             paddingRight: "3%",
           }}
         >
-          <TouchableOpacity onPress={logout}>
-            <Text style={{ color: "white" }}>Cerrar sesion</Text>
-          </TouchableOpacity>
         </View>
-        {
-          // Inputs de edad
-          adoptanteData.imagen64 && !image ? (
-            <TouchableOpacity onPress={selectImage}>
-              <Image
-                style={style.image}
-                source={{ uri: `${adoptanteData.imagen64}` }}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={selectImage}>
-              <Image style={style.image} source={{ uri: image }} />
-            </TouchableOpacity>
-          )
-        }
-        {/*<Spinner visible={isLoading} />*/}
-        <View style={style.fondo2}>
+        <View style={style.imageContainer}>
+          {
+            // Inputs de edad
+            adoptanteData.imageUrl && !image ? (
+              <TouchableOpacity onPress={selectImage}>
+                <Image
+                  style={style.image}
+                  source={adoptanteData.imageUrl}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={selectImage}>
+                <Image style={style.image} source={{ uri: image }} />
+              </TouchableOpacity>
+            )
+          }
           <View style={style.fondoPerfil}>
             <View
               style={{
@@ -199,44 +213,73 @@ export const ProfileUser = () => {
               }}
             >
               <Text style={style.sesion}>
-                {adoptanteData.user?.name} {adoptanteData.user?.lastname}
+                {adoptanteData.first_name} {adoptanteData.lastname}
               </Text>
             </View>
           </View>
+        </View>
+        <View style={style.botonLogout}>
+          <Button
+            color={"#DF9F51"}
+            title="Cerrar sesión"
+            onPress={logout}
+            style={style.prueba}
+          />
+        </View>
+        {/*<Spinner visible={isLoading} />*/}
+        <View style={style.fondo2}>
           <View style={style.fondo3}>
             <View style={style.inputs}>
-              <TextInput
-                style={style.input}
-                //value={email}
-                placeholder={adoptanteData.user?.email}
-                editable={false}
-                //onChangeText={text => setEmail(text)}
-              />
+              <View style={style.inputContainer}>
+                <Text style={style.label}>Correo</Text>
+                <TextInput
+                  style={editable? style.input : style.inputNotEditable}
+                  //value={email}
+                  placeholder={adoptanteData.email}
+                  editable={false}
+                  //onChangeText={text => setEmail(text)}
+                />
+              </View>
+              
+              <View style={style.inputContainer}>
+              <Text style={style.label}>Telefono</Text>
+                <TextInput
+                  style={style.input}
+                  //value={dataUser.phone}
+                  placeholder={adoptanteData.phone}
+                  onChangeText={(text) => setPhone(text)}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                />
+              </View>
 
-              <TextInput
-                style={style.input}
-                //value={dataUser.phone}
-                placeholder={adoptanteData.user?.phone}
-                onChangeText={(text) => setPhone(text)}
-              />
+              <View style={style.inputContainer}>
+                <Text style={style.label}>Dirección</Text>
+                <TextInput
+                  style={style.input}
+                  value={direction}
+                  placeholder={adoptanteData.address}
+                  onChangeText={(text) => setDirection(text)}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                />
+              </View>
 
-              <TextInput
-                style={style.input}
-                value={direction}
-                placeholder={adoptanteData.user?.direction}
-                onChangeText={(text) => setDirection(text)}
-              />
-
-              <TextInput
-                style={style.input}
-                value={age}
-                placeholder={
-                  adoptanteData.user?.age !== undefined
-                    ? adoptanteData.user?.age.toString()
-                    : "Ingrese su edad"
-                }
-                onChangeText={(text) => setAge(text)}
-              />
+              <View style={style.inputContainer}>
+              <Text style={style.label}>Edad</Text>
+                <TextInput
+                  style={style.input}
+                  value={age}
+                  placeholder={
+                    adoptanteData.age !== undefined
+                      ? adoptanteData.age.toString()
+                      : "Ingrese su edad"
+                  }
+                  onChangeText={(text) => setAge(text)}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                />
+              </View>
 
               {/* {
                 adoptanteData?.user.age!==null?
@@ -273,20 +316,23 @@ export const ProfileUser = () => {
                 )
               */
               }
+              {/* Boton de guardar*/}
+              <View style={style.botones}>
+                <View style={style.boton}>
+                  <Button
+                    color={"#5FAFB9"}
+                    title="Guardar"
+                    onPress={() => {
+                      update(phone, direction, age, image);
+                      //imageupdate(image)
+                    }}
+                  />
+                </View>
+              </View>
+              
             </View>
-            {/* Boton de guardar*/}
-            <View style={style.boton}>
-              <Button
-                color={"#5FAFB9"}
-                title="Guardar"
-                onPress={() => {
-                  update(phone, direction, age, image);
-                  //imageupdate(image)
-                }}
-              />
             </View>
           </View>
-        </View>
       </View>
     </ScrollView>
   );
@@ -294,7 +340,7 @@ export const ProfileUser = () => {
 
 const style = StyleSheet.create({
   sesion: {
-    color: "black",
+    color: "#335143",
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 25,
@@ -307,59 +353,81 @@ const style = StyleSheet.create({
   fondo2: {
     backgroundColor: "#fff",
     width: width,
-    height: height * 0.7,
+    paddingTop: '8%',
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     overflow: "hidden",
     justifyContent: "center",
   },
   fondo3: {
-    marginTop: "5%",
+    //marginTop: "5%",
     //marginBottom: '1%'
   },
   fondoPerfil: {
     justifyContent: "center",
     alignItems: "center",
   },
+
   image: {
     //width: '50%',
     //height: '30%',
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 100,
     overflow: "hidden",
     //marginTop: '25%',
-    marginBottom: "10%",
+    //marginBottom: "10%",
     backgroundColor: "white",
   },
   image2: {
     //width: '50%',
     //height: '30%',
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 180,
     borderRadius: 100,
-    marginTop: "2%",
-    marginBottom: "2%",
+    //marginTop: "2%",
+    //marginBottom: "2%",
+  },
+  inputContainer: {
+    paddingBottom: "5%",
+  },
+  label:{
+    fontSize: width * 0.05,
+    //paddingBottom: 5,
+    fontWeight: "bold",
+    color: "#335143",
   },
   input: {
-    height: 45,
-    paddingLeft: 10,
-    margin: "1.5%",
-    marginLeft: "10%",
-    marginRight: "10%",
-    borderWidth: 1,
+    height: 35,
+
+    borderBottomWidth: 1,
     fontSize: width * 0.05,
-    borderRadius: 12,
     color: "grey",
     borderColor: "grey",
+  },
+  inputNotEditable:{
+    height: 35,
+    borderBottomWidth: 1,
+    fontSize: width * 0.05,
+    opacity: 0.3,
+    color: "grey",
+    borderColor: "grey",
+
+  },
+  botones: {
+    padding: 20
   },
   boton: {
     marginLeft: "10%",
     marginRight: "10%",
-    padding: 20,
+    //padding: 20,
     borderRadius: 10,
-    marginBottom: "5%",
-    marginTop: "5%",
+    paddingBottom: "5%",
+    //marginTop: "5%",
+  },
+  botonLogout:{
+    paddingTop: '1%',
+    paddingBottom: '5%',
   },
   img: {
     width: "5%",
@@ -395,7 +463,6 @@ const style = StyleSheet.create({
     marginTop: "3%",
   },
   inputs: {
-    marginBottom: "5%",
-    marginTop: "5%",
+    paddingHorizontal: "10%",
   },
 });

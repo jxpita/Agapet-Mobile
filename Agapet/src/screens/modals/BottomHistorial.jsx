@@ -13,6 +13,7 @@ import {
 
 } from 'react-native'
 import { BottomImagen } from './BottomImagen'
+import { API_URL } from "@env";
 
 
 const deviceHeight = Dimensions.get('window').height
@@ -145,7 +146,7 @@ export class BottomHistorial extends React.Component {
                     imagen ={imagen}
                     estado='No iniciado'
                     //src={require('../../../assets/fotousuario.jpg')}
-                    //src={{uri: `http://192.168.200.4:8000/${imagen}`}}
+                    //src={{uri: `${API_URL}/${imagen}`}}
                     ref={(target) => popupRef7 = target}
                     onTouchOutside={onClosePopup7}
                     data={popupList}

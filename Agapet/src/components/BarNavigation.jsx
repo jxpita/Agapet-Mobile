@@ -13,11 +13,15 @@ import { Timeline } from "../screens/timeline/Timeline";
 import { ProfileUser } from "../screens/profile/ProfileUser";
 // Mascota
 import { Pet } from "../screens/petProfile/Pet";
+import { Principal } from "../screens/principal/Principal";
 import { Clinic } from "../screens/petProfile/Clinic";
 import { Vaccine } from "../screens/petProfile/Vaccine";
 import { Sterilization } from "../screens/petProfile/Sterilization";
 import { Wormed } from "../screens/petProfile/Wormed";
 import { UpdateVaccine } from "../screens/petProfile/UpdateVaccine";
+import { Evento } from '../screens/evento/Evento'; 
+import { Adopciones } from '../screens/adopciones/Adopciones';
+import { PetScreen } from "../screens/pet/pet";
 //faq
 import { Faq } from "../screens/faq/faq";
 //recompensa
@@ -26,6 +30,8 @@ import { Canjeo } from "../screens/recompensa/Canjeo";
 //cursos
 import { Cursos } from "../screens/cursos/Cursos";
 import { InfoCurso } from "../screens/cursos/InfoCurso";
+
+import { useNavigationVisibility } from './NavigationContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -144,7 +150,7 @@ function StackTimeline() {
         options={{
           headerShown: false,
         }}
-      />
+      />   
     </Stack.Navigator>
   );
 }
@@ -199,6 +205,34 @@ function StackPet() {
         component={Timeline}
         options={{
           headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function StackEvento() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Evento"
+        component={Evento}
+        options={{
+          headerShown: false, // Cambia esto según tus preferencias
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function StackAdopciones() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Adopciones"
+        component={Adopciones}
+        options={{
+          headerShown: false, // Cambia esto según tus preferencias
         }}
       />
     </Stack.Navigator>
@@ -270,32 +304,67 @@ function StackCursos() {
 }
 
 function MyTabs() {
+  const { isTabBarVisible } = useNavigationVisibility();
   return (
     <Tab.Navigator
-      initialRouteName="ProfileUser" //Cambiar aqui una pantalla para ver mascota o timeline
+      initialRouteName="Principal" //Cambiar aqui una pantalla para ver mascota o timeline
       screenOptions={{
-        tabBarActiveTintColor: "white",
-        tabBarInactiveTintColor: "black",
-        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#335143",
+        tabBarInactiveTintColor: "white",
+        tabBarShowLabel: true,
         tabBarStyle: {
+          display: isTabBarVisible ? 'flex' : 'none',
           position: "absolute",
-          backgroundColor: "#FA8639",
+          backgroundColor: "#DF9F51",
           bottom: 8,
           left: 20,
           right: 20,
           elevation: 0,
-          borderRadius: 15,
+          borderRadius: 25,
+          height: 55,
+          paddingHorizontal: '5%',
+          paddingTop: 5,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12, // Ajusta este valor para cambiar el tamaño del texto
+          paddingBottom: 5,
         },
       }}
     >
       <Tab.Screen
-        name="StackCursos"
-        component={StackCursos}
+        name="PetScreen"
+        component={PetScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="graduation-cap" size={size} color={color} />
+            <FontAwesome5 name="dog" size={size} color={color} />
           ),
+          tabBarLabel: 'Mis mascotas',
+        }}
+      />
+
+      <Tab.Screen
+        name="Adopciones"
+        component={StackAdopciones}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            // Elige un icono apropiado para la pestaña de Evento
+            <FontAwesome name="paw" size={size} color={color} />
+          ),
+          tabBarLabel: 'Adopciones',
+        }}
+      />   
+
+      <Tab.Screen
+        name="Principal"
+        component={Principal}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="home" size={size} color={color} />
+          ),
+          tabBarLabel: 'Inicio',
         }}
       />
 
@@ -305,23 +374,27 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="user-circle" size={size} color={color} />
+            <FontAwesome name="user-circle" size={size} color={color} />
           ),
+          tabBarLabel: 'Mi Perfil',
         }}
       />
 
       <Tab.Screen
-        name="Pet"
-        component={StackPet}
+        name="Evento"
+        component={StackEvento}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="paw" size={size} color={color} />
+            // Elige un icono apropiado para la pestaña de Evento
+            <MaterialCommunityIcons name="calendar" size={size} color={color} />
           ),
+          tabBarButton: () => null, 
+          //tabBarStyle: { display: 'none' }, Ocutar el navbar de la ventana
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="faq"
         component={Faq}
         options={{
@@ -330,8 +403,8 @@ function MyTabs() {
             <FontAwesome name="question-circle-o" size={size} color={color} />
           ),
         }}
-      />
-      <Tab.Screen
+      /> */}
+     {/*  <Tab.Screen
         name="StackTimeline"
         component={StackTimeline}
         options={{
@@ -340,7 +413,7 @@ function MyTabs() {
             <Ionicons name="analytics-outline" size={size} color={color} />
           ),
         }}
-      />
+      /> */}
 
       {/* 
       <Tab.Screen

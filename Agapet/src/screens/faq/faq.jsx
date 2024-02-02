@@ -23,6 +23,7 @@ import {
 } from "react-native";
 import AccordionItem from "../../components/AccordionItem";
 import Searchbar from "../../components/Searchbar.js";
+import { API_URL } from "@env";
 
 const { height, width } = Dimensions.get("window");
 
@@ -56,7 +57,7 @@ export const Faq = () => {
   ];
 
   const getFaq = () => {
-    const url = "http://192.168.200.4:8000/faq/faq/tema";
+    const url = `${API_URL}/faq/faq/tema`;
     axios
       .get(url, {
         headers: {
@@ -74,7 +75,7 @@ export const Faq = () => {
   };
 
   const getTema = () => {
-    const url = "http://192.168.200.4:8000/faq/tema";
+    const url = `${API_URL}/faq/tema`;
     axios
       .get(url, {
         headers: {
@@ -103,7 +104,7 @@ export const Faq = () => {
   const getPreguntasFrecuentes = async () => {
     try {
       const resp = await axios.get(
-        "http://192.168.200.4:8000/faq/listpreguntas"
+        `${API_URL}/faq/listpreguntas`
       );
 
       const listaActive = resp.data.filter((faq) => faq.is_active !== false);
@@ -187,7 +188,7 @@ export const Faq = () => {
 
   const pullMe = async () => {
     setrefresh(true);
-    const resp = await axios.get("http://192.168.200.4:8000/faq/listpreguntas");
+    const resp = await axios.get(`${API_URL}/faq/listpreguntas`);
     const listaActive = resp.data.filter((faq) => faq.is_active !== false);
     setlistPreguntasFrecuentes(listaActive);
     setTimeout(() => {

@@ -21,6 +21,7 @@ import { BottomNotification } from '../../screens/timeline/BottomNotification'
 import { BottomRecompensa } from './BottomRecompensa'
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
+import { API_URL } from "@env";
 
 
 const popupList = [
@@ -85,7 +86,7 @@ export const Canjeo = ({ route }) => {
     };
 
     const update = () => {
-        const url = 'http://192.168.200.4:8000/user/update';
+        const url = `${API_URL}/user/update`;
         const puntos = (usuario.points - recompensa.puntos);
         let bodyFormData = new FormData();
         bodyFormData.append('points', puntos);
@@ -123,7 +124,7 @@ export const Canjeo = ({ route }) => {
                         <TouchableOpacity
                             onPress={()=> navigation.navigate('Pet')}>
                             <Image style={style.imgIcon2}
-                            source={{ uri: `http://192.168.200.4:8000/${mascota.image}` }}
+                            source={{ uri: `${API_URL}/${mascota.image}` }}
                             />
                         </TouchableOpacity>
                         </View>
@@ -166,7 +167,7 @@ export const Canjeo = ({ route }) => {
 
             <View style={style.iconCaracte4}>
                 <Image style={style.imgIcon2v}
-                    source={{ uri: `http://192.168.200.4:8000/${recompensa.imagen}` }}
+                    source={{ uri: `${API_URL}/${recompensa.imagen}` }}
                 />
             </View>
             <Text style={{ fontSize: width * 0.045, marginLeft: '5%', fontWeight: "bold", margin: '3%' }}> ¿Qué incluye?</Text>
@@ -188,7 +189,7 @@ export const Canjeo = ({ route }) => {
                 <BottomRecompensa
                     title='¡Felicitaciones!'
                     desp={recompensa.descripcionFinal}
-                    imagen={`http://192.168.200.4:8000/${recompensa.imagen}`}
+                    imagen={`${API_URL}/${recompensa.imagen}`}
                     estado='No iniciado'
                     ref={(target) => popupRef = target}
                     onTouchOutside={onClosePopup}

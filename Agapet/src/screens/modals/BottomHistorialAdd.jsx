@@ -19,6 +19,10 @@ import {
     Platform,
 
 } from 'react-native'
+
+import { API_URL } from "@env";
+
+
 const deviceHeight = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
@@ -140,7 +144,7 @@ export class BottomHistorialAdd extends React.Component {
         }
 
         const update = (fecha, lugar,descipcion, imagen) =>{
-            let url = `http://192.168.200.4:8000/vacuna/actualizar/${idvacuna}/`;
+            let url = `${API_URL}/vacuna/actualizar/${idvacuna}/`;
             let bodyFormData = new FormData()
             if(this.state.fecha.length > 0){
                 bodyFormData.append('fecha', fecha)

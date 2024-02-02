@@ -21,6 +21,7 @@ import { BottomNotification } from '../../screens/timeline/BottomNotification'
 import Searchbar from '../../components/Searchbar'
 import YoutubePlayer from 'react-native-youtube-iframe'
 import { useNavigation } from '@react-navigation/native';
+import { API_URL } from "@env";
 
 
 const popupList = [
@@ -65,7 +66,7 @@ export const InfoCurso = ({ route }) => {
     }
 
     const getTema = () => {
-        axios.get(`http://192.168.200.4:8000/cursos/tema/cursos?idcurso=${cursos.idcurso}`,
+        axios.get(`${API_URL}/cursos/tema/cursos?idcurso=${cursos.idcurso}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

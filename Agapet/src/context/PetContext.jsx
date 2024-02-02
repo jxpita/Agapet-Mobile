@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { API_URL } from "@env";
 
 export const PetContext = () => {
   const { userInfo } = useContext(AuthContext);
@@ -12,7 +13,7 @@ export const PetContext = () => {
 
     try {
         
-        const resp = await axios.get(`http://192.168.200.4:8000/mascota/usuario/${userInfo.idAdoptante}/`);
+        const resp = await axios.get(`${API_URL}/mascota/usuario/${userInfo.idAdoptante}/`);
         setisLoading(false);
         setPet(resp?.data[0]);
         setClinic(resp?.data[0].vacunas);
@@ -23,9 +24,9 @@ export const PetContext = () => {
 
     /*
     try {
-      //const url = "http://192.168.200.4:8000/user/data";
+      //const url = "${API_URL}/user/data";
       const resp = await axios.get(
-        `http://192.168.200.4:8000/mascota/usuario/${userInfo.idAdoptante}/`
+        `${API_URL}/mascota/usuario/${userInfo.idAdoptante}/`
       );
     
       console.log(resp.data);
@@ -47,7 +48,7 @@ export const PetContext = () => {
 
 
         // *********************
-        axios.get(`http://192.168.200.4:8000/mascota/usuario/${res.data?.iduser}/`,
+        axios.get(`${API_URL}/mascota/usuario/${res.data?.iduser}/`,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ export const PetContext = () => {
   };
 
   const getVacunas = () => {
-    const url = "http://192.168.200.4:8000/user/data";
+    const url = `${API_URL}/user/data`;
     axios
       .get(url, {
         headers: {
@@ -79,7 +80,7 @@ export const PetContext = () => {
         // *********************
         axios
           .get(
-            `http://192.168.200.4:8000/vacuna/mascota?iduser=${res.data.iduser}`,
+            `${API_URL}/vacuna/mascota?iduser=${res.data.iduser}`,
             {
               headers: {
                 "Content-Type": "application/json",

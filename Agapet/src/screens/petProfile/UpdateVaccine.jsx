@@ -14,6 +14,7 @@ import {
   PixelRatio,
   Modal
 } from 'react-native';
+import { API_URL } from "@env";
 
 export const UpdateVaccine = ({route}) => {
   const data = route.params.data
@@ -38,7 +39,7 @@ export const UpdateVaccine = ({route}) => {
 
 
   const update = (fecha, lugar,descipcion, image) =>{
-    let url = `http://192.168.200.4:8000/vacuna/actualizar/${data.vacuna_id}/`;
+    let url = `${API_URL}/vacuna/actualizar/${data.vacuna_id}/`;
     let bodyFormData = new FormData()
     if(fecha.length > 0){
       bodyFormData.append('fecha', fecha)

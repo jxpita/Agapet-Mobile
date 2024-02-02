@@ -94,19 +94,19 @@ export const Login = ({ navigation }) => {
           <Button
             color={"#5FAFB9"}
             margin={"10%"}
-            title="Login"
+            title="Iniciar Sesión"
             onPress={() => {
               validate();
             }}
           />
         </View>
 
-        {/* <View style={{ flexDirection: 'row', marginTop: 10, marginLeft: 10 }}>
+        <View style={{ flexDirection: 'row',justifyContent: 'center', marginTop: 10, marginLeft: 10 }}>
           <Text>¿No tienes una cuenta? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={style.sesion}>Registrate</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
     </View>
   );

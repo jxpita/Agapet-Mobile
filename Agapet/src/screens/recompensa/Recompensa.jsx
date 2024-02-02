@@ -22,7 +22,7 @@ import { BottomNotification } from '../../screens/timeline/BottomNotification'
 import Searchbar from '../../components/Searchbar'
 import { AuthContext } from '../../context/AuthContext';
 import { PetContext } from '../../context/PetContext';
-
+import { API_URL } from "@env";
 
 const popupList = [
     {
@@ -61,7 +61,7 @@ export const Recompensa = () => {
     const [recompensaCompletos, setRecompensaCompletos] = useState([]);
 
     const getUser = (token) => {
-        const url = 'http://192.168.200.4:8000/user/data';
+        const url = `${API_URL}/user/data`;
         axios.get(url,
             {
                 headers: {
@@ -82,7 +82,7 @@ export const Recompensa = () => {
     }
 
     const getRecompensa = () => {
-        const url = 'http://192.168.200.4:8000/recompensa/recompensa';
+        const url = `${API_URL}/recompensa/recompensa`;
         axios.get(url,
             {
                 headers: {
@@ -237,7 +237,7 @@ export const Recompensa = () => {
                                                 <View style={style.iconCaracte4}>
                                                     <Image style={style.imgIcon2v}
 
-                                                        source={{ uri: `http://192.168.200.4:8000/${recompensa.imagen}` }}
+                                                        source={{ uri: `${API_URL}/${recompensa.imagen}` }}
                                                     />
                                                 </View>
                                                 <View style={style.iconCaracte5}>

@@ -91,7 +91,7 @@ export const Register = ({ navigation }) => {
             resizeMode={'contain'} />
           <Spinner visible={isLoading} />
           <View style={styles.fondo2}>
-            <View style={{marginTop:'10%'}} >
+            <View style={{marginTop:'5%'}} >
               <TextInput
                 style={styles.input}
                 value={name}
@@ -137,7 +137,7 @@ export const Register = ({ navigation }) => {
               <TextInput
                 style={styles.input}
                 value={password2}
-                placeholder="Ingrese su contraseña"
+                placeholder="Repita su contraseña"
                 onChangeText={text => setPassword2(text)}
                 secureTextEntry
               />
@@ -154,16 +154,9 @@ export const Register = ({ navigation }) => {
               </View>
             </View>
             <View >
-              <Text
-                onPress={() => navigation.navigate('Login')}
-                style={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  fontSize: 16,
-                }}>
-                Iniciar sesion
-              </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.sesion}>Regresar</Text>
+            </TouchableOpacity>
             </View>
 
           </View>
@@ -178,7 +171,8 @@ const styles = StyleSheet.create({
       color: '#5FAFB9',
       fontWeight: 'bold',
       textAlign: 'center',
-      fontSize: 16
+      fontSize: 16,
+      marginBottom: '5%'
   },
   fondo: {
       backgroundColor: '#DF9F51',
@@ -223,7 +217,7 @@ const styles = StyleSheet.create({
   },
   input: {
       height: 45,
-      margin: 10,
+      margin: 5,
       marginLeft: '10%',
       marginRight: '10%',
       paddingLeft:10,
@@ -237,10 +231,8 @@ const styles = StyleSheet.create({
       
       marginLeft: '10%',
       marginRight: '10%',
-      padding: 20,
+      padding: 10,
       borderRadius: 10,
-      //marginBottom: '5%',
-      //marginTop: '5%'
   },
   img: {
       width: '5%',

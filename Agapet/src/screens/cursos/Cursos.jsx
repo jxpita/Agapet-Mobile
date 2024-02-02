@@ -22,6 +22,7 @@ import { BottomNotification } from '../../screens/timeline/BottomNotification'
 import Searchbar from '../../components/Searchbar'
 import { AuthContext } from '../../context/AuthContext';
 import { PetContext } from '../../context/PetContext';
+import { API_URL } from "@env";
 
 const popupList = [
     {
@@ -75,7 +76,7 @@ export const Cursos = () => {
     }
 
     const getUser = (token) => {
-        const url = 'http://192.168.200.4:8000/user/data';
+        const url = `${API_URL}/user/data`;
         axios.get(url,
             {
                 headers: {
@@ -91,7 +92,7 @@ export const Cursos = () => {
     };
 
     const getCursos = () => {
-        const url = 'http://192.168.200.4:8000/cursos/cursos';
+        const url = `${API_URL}/cursos/cursos`;
         axios.get(url,
             {
                 headers: {
@@ -258,7 +259,7 @@ export const Cursos = () => {
                                         <View style={style.caracte}>
                                             <View style={style.iconCaracte4}>
                                                 <Image style={style.imgIcon2v}
-                                                    source={{ uri: `http://192.168.200.4:8000/${cursos.imagen}` }}
+                                                    source={{ uri: `${API_URL}/${cursos.imagen}` }}
                                                 />
                                             </View>
                                             <View style={style.iconCaracte5}>

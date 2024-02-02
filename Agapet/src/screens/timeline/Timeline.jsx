@@ -34,6 +34,8 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
+import { API_URL } from "@env";
+
 const popupList = [
   {
     id: 1,
@@ -135,7 +137,7 @@ export const Timeline = () => {
 
   /* 
     const getFases = () => {
-        const url = 'http://192.168.200.4:8000/user/data';
+        const url = `${API_URL}/user/data`;
         axios.get(url,
             {
                 headers: {
@@ -144,7 +146,7 @@ export const Timeline = () => {
                 },
             }).then(res => {
                 // *********************
-                axios.get(`http://192.168.200.4:8000/timeline/fases?iduser=${res.data.iduser}`,
+                axios.get(`${API_URL}/timeline/fases?iduser=${res.data.iduser}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',
@@ -165,7 +167,7 @@ export const Timeline = () => {
   const getFases = async () => {
     try {
       const resp = await axios.get(
-        `http://192.168.200.4:8000/timeline/adoptante/${userInfo.idAdoptante}`
+        `${API_URL}/timeline/adoptante/${userInfo.idAdoptante}`
       );
       //console.log(resp.data[0].fases);
       setfasesTimeline(resp.data[0].fases); //[{},{},{}]
@@ -267,7 +269,7 @@ export const Timeline = () => {
   const pullMe = async () => {
     setrefresh(true);
     const resp = await axios.get(
-      `http://192.168.200.4:8000/timeline/adoptante/${userInfo.idAdoptante}`
+      `${API_URL}/timeline/adoptante/${userInfo.idAdoptante}`
     );
     setfasesTimeline(resp.data[0].fases);
     setTimeout(() => {
@@ -1112,7 +1114,7 @@ const style = StyleSheet.create({
                             <SafeAreaView style={style.container2}>
                                 <TouchableWithoutFeedback onPress={onShowPopup8}>
                                     <Image style={style.imgIcon2}
-                                        source={{ uri: `http://192.168.200.4:8000/${pet.image}` }}
+                                        source={{ uri: `${API_URL}/${pet.image}` }}
                                     />
                                 </TouchableWithoutFeedback>
                             </SafeAreaView>
