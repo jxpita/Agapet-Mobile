@@ -5,7 +5,7 @@ Para instalar paquetes
 
 ```npm install```
 
-Para levantar mobile
+Para levantar proyecto
 <br>
 
-```expo start```
+```npm start```
